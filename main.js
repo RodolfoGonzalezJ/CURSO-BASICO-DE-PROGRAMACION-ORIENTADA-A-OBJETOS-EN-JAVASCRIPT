@@ -1,65 +1,94 @@
-const rodolfo = {
-    name: 'Rodolfo',
-    age: 18,
-    cursosAprobados: [
-        'Curso Definitivo de HTML y CSS',
-        'Curso Practico de HTML y CSS'
-    ], 
-    aprobarCurso(nuevoCursito){
-        this.cursosAprobados.push(nuevoCursito)
-    }
-};
-
-function Students(name, age, cursosAprobados) {
-    this.name = name;
-    this.age = age;
-    this.cursosAprobados = cursosAprobados;
-    /*this.aprobarCurso = function (nuevoCursito){
-        this.cursosAprobados.push(nuevoCursito)
-    }*/
-}
-
-Students.prototype.aprobarCurso = function (nuevoCursito){
-    this.cursosAprobados.push(nuevoCursito)
-}
-
-const jesus = new Students(
-    'Jesus Gonzalez',
-    14,
-    [
-        'Curso de Introduccion a la produccion de videojuegos',
-        'Curso de creacion de personajes'
-    ]
-
-)
-
-//Prototipos con la sintaxis de las clases
-
-class Students2 {
+class Course {
     constructor({
-        name, 
-        age, 
-        cursosAprobados = [],
-        email,
-    }){
-        this.name = name;
-        this.age = age;
-        this.cursosAprobados = cursosAprobados;
-        this.email = email;
+      id,
+      name,
+      teacher,
+      lessons = [],
+    }) {
+      this.id = id;
+      this.name = name;
+      this.teacher = teacher;
+      this.lessons = lessons;
     }
+}
+  
+class LearningPath {
+    constructor({
+      id,
+      name,
+      courses = [],
+    }) {
+      this.id = id;
+      this.name = name;
+      this.courses = courses;
+    }
+  
+    addCourse(course) {
+      this.courses.push(course);
+    }
+  
+    replaceCourse(oldCourse, newCourse) {
+      const oldCourseIndex = this.courses.findIndex(course => course.id === oldCourse.id);
+  
+      if (oldCourseIndex !== -1) {
+        this.courses[oldCourseIndex] = newCourse;
+      }
+  
+      return this.courses;
+    }
+  
+    deleteCourse(oldCourse) {
+      const courseIndex = this.courses.findIndex(course => course.id === oldCourse.id);
+      this.courses.splice(courseIndex, 1);
+  
+      return this.courses;
+    }
+}
+  
+const reactNativeLearningPath = new LearningPath({
+    id: 'react-native',
+    name: 'Desarrollo de Apps con React Native',
+    courses: [
+      new Course({ 
+        id: 'basico-javascript', 
+        name: 'Curso Básico de JavaScript', 
+        teacher: 'Diego De Granda',
+      }),
+      new Course({
+        id: 'ecmascript-6',
+        name: 'Curso de ECMAScript 6+',
+        teacher: 'Orlando Naipes',
+      }),
+      // etc...
+    ]
+})
 
-    aprobarCurso(nuevoCursito){
-        this.cursosAprobados.push(nuevoCursito)
+class Student {
+    constructor(
+        name, 
+        email,
+        username,
+        twitter = undefined,
+        instagram = undefined,
+        facebook = undefined,
+        approvedCourses = [],
+        learningPaths = []
+    ){
+        this.name = name;
+        this.email = email;
+        this.username = username;
+        this.socialMedia = {
+            twitter,
+            instagram,
+            facebook
+        };
+        this.approvedCourses = approvedCourses;
+        this.learningPaths = learningPaths;
     }
 }
 
-
-const dexi = new Students2({
-    name: 'Dexi',
-    age: 50,
-    cursosAprobados: [
-        'Curso de Analisis de Negocios para Ciencia de Datos',
-        'Curso de principios de visualizacion de Datos par BI'
-    ],
-    email: 'dexi@gmail.com'
+const rodolfo = new Student({
+    name: 'Rodolfo',
+    email: 'rgonzalezjimenez8@gmail.com',
+    username: 'rodolfogonzalez_'
 })
