@@ -1,65 +1,59 @@
 class Course {
-    constructor({
-      id,
-      name,
-      teacher,
-      lessons = [],
-    }) {
-      this.id = id;
-      this.name = name;
-      this.teacher = teacher;
-      this.lessons = lessons;
+    constructor(
+        name,
+        classes = []
+    ){
+        this.name = name;
+        this.classes = classes;
     }
 }
-  
-class LearningPath {
-    constructor({
-      id,
-      name,
-      courses = [],
-    }) {
-      this.id = id;
-      this.name = name;
-      this.courses = courses;
-    }
-  
-    addCourse(course) {
-      this.courses.push(course);
-    }
-  
-    replaceCourse(oldCourse, newCourse) {
-      const oldCourseIndex = this.courses.findIndex(course => course.id === oldCourse.id);
-  
-      if (oldCourseIndex !== -1) {
-        this.courses[oldCourseIndex] = newCourse;
-      }
-  
-      return this.courses;
-    }
-  
-    deleteCourse(oldCourse) {
-      const courseIndex = this.courses.findIndex(course => course.id === oldCourse.id);
-      this.courses.splice(courseIndex, 1);
-  
-      return this.courses;
+
+const cursoProgBasica = new Course({
+    name: 'Curso Gratis de Programacion Basica'
+})
+
+const cursoDefinitivoHTML = new Course({
+    name: 'Curso Definitivo de HTML y CSS'
+})
+
+const cursoPracticoHTML = new Course({
+    name: 'Curso Practico de HTML y CSS'
+})
+
+class LearningPaths{
+    constructor(
+        name,
+        courses = []
+    ){
+        this.name = name;
+        this.courses = courses;
     }
 }
-  
-const reactNativeLearningPath = new LearningPath({
-    id: 'react-native',
-    name: 'Desarrollo de Apps con React Native',
+
+const escuelaWeb = new LearningPaths({
+    name: 'Escuela de Desarrollo Web',
     courses: [
-      new Course({ 
-        id: 'basico-javascript', 
-        name: 'Curso Básico de JavaScript', 
-        teacher: 'Diego De Granda',
-      }),
-      new Course({
-        id: 'ecmascript-6',
-        name: 'Curso de ECMAScript 6+',
-        teacher: 'Orlando Naipes',
-      }),
-      // etc...
+        cursoProgBasica,
+        cursoDefinitivoHTML,
+        cursoPracticoHTML,
+    ]
+})
+
+const escuelaData = new LearningPaths({
+    name: 'Escuela de Data Science',
+    courses: [
+        cursoProgBasica,
+        'Curso DataBusiness',
+        'Curso DataViz',
+    ]
+})
+
+const escuelaVgs = new LearningPaths({
+    name: 'Escuela de Videojuegos',
+    courses: [
+        cursoProgBasica,
+        'Curso de Unity3D',
+        'Curso de Unreal Engine',
     ]
 })
 
@@ -90,5 +84,8 @@ class Student {
 const rodolfo = new Student({
     name: 'Rodolfo',
     email: 'rgonzalezjimenez8@gmail.com',
-    username: 'rodolfogonzalez_'
+    username: 'rodolfogonzalez_',
+    learningPaths: [
+        escuelaWeb
+    ]
 })
