@@ -1,15 +1,80 @@
+class Comment {
+    constructor({
+        content,
+        studentName,
+        studentRole = "Estudiante",
+    }){
+        this.content = content;
+        this.studentName = studentName;
+        this.studentRole = studentRole;
+        this.likes = 0;
+    }
+
+    publicar(){
+        console.log(this.studentName + " (" + this.studentRole + ") " );
+        console.log(this.likes + " likes");
+        console.log(this.content);
+    }
+}
+
+function videoPlay(id){
+    const urlSecreta = "https://platzi.com " + id;
+    console.log("Se está reproduciendo desde la url secreta " + urlSecreta)
+}
+
+function videoStop(id){
+    const urlSecreta = "https://platzi.com " + id;
+    console.log("Pausamos la url " + urlSecreta)
+}
+
+class PlatziClass{
+    constructor({
+        name,
+        videoId
+    }){
+        this.name = name;
+        this.videoId = videoId
+    }
+
+    reproducir(){
+        videoPlay(this.videoId);
+    }
+
+    pausar(){
+        videoStop(this.videoId)
+    }
+}
+
 class Course {
     constructor(
         name,
-        classes = []
+        classes = [],
+        isFree = false,
+        lang = "Spanish"
     ){
-        this.name = name;
+        this._name = name;
         this.classes = classes;
+        this.isFree = isFree;
+        this.lang = lang;
+    }
+
+    get name(){
+        return this._name;
+    }
+
+    set name(nuevoNombre){
+        if (nuevoNombre == "Lo que no quiero que sea"){
+            console.error("NOOOOOO")
+        } else {
+            this._name = nuevoNombre;
+        }
     }
 }
 
 const cursoProgBasica = new Course({
-    name: 'Curso Gratis de Programacion Basica'
+    name: 'Curso Gratis de Programacion Basica',
+    isFree: true,
+
 })
 
 const cursoDefinitivoHTML = new Course({
@@ -17,7 +82,8 @@ const cursoDefinitivoHTML = new Course({
 })
 
 const cursoPracticoHTML = new Course({
-    name: 'Curso Practico de HTML y CSS'
+    name: 'Curso Practico de HTML y CSS',
+    lang: "English"
 })
 
 class LearningPaths{
@@ -79,10 +145,107 @@ class Student {
         this.approvedCourses = approvedCourses;
         this.learningPaths = learningPaths;
     }
+
+    publicarComentario(commentContent){
+        const comment = new Comment({
+            content: commentContent,
+            studentName: this.name,
+
+        });
+        
+        comment.publicar();
+    }
 }
 
-const rodolfo = new Student({
+class FreeStudent extends Student{
+    constructor(props){
+        super(props);
+    }
+
+    approvedCourse(newCourse){
+        if(newCourse.isFree){
+            this.approvedCourses.push(newCourse);
+        }else{
+            console.warn("Lo sentimos " + this.name + " solo puedes tomar cursos gratis")
+        }
+    }
+}
+
+class BasicStudent extends Student{
+    constructor(props){
+        super(props);
+    }
+
+    approvedCourse(newCourse){
+        if(newCourse.lang !== "English"){
+            this.approvedCourses.push(newCourse);
+        }else{
+            console.warn("Lo sentimos " + this.name + " no puedes tomar cursos en ingles")
+        }
+    }
+}
+
+class ExpertStudent extends Student{
+    constructor(props){
+        super(props);
+    }
+
+    approvedCourse(newCourse){
+        this.approvedCourses.push(newCourse);
+    }
+}
+
+class TeacherStudent extends Student{
+    constructor(props){
+        super(props);
+    }
+
+    approvedCourse(newCourse){
+        this.approvedCourses.push(newCourse);
+    }
+
+    publicarComentario(commentContent){
+        const comment = new Comment({
+            content: commentContent,
+            studentName: this.name,
+            studentRole: "Profesor"
+
+        });
+        
+        comment.publicar();
+    }
+}
+
+
+const rodolfo1 = new ExpertStudent({
     name: 'Rodolfo',
+    email: 'rgonzalezjimenez8@gmail.com',
+    username: 'rodolfogonzalez_',
+    learningPaths: [
+        escuelaWeb
+    ]
+})
+
+const rodolfo2 = new BasicStudent({
+    name: 'Rodolfo',
+    email: 'rgonzalezjimenez8@gmail.com',
+    username: 'rodolfogonzalez_',
+    learningPaths: [
+        escuelaWeb
+    ]
+})
+
+const rodolfo3 = new FreeStudent({
+    name: 'Rodolfo',
+    email: 'rgonzalezjimenez8@gmail.com',
+    username: 'rodolfogonzalez_',
+    learningPaths: [
+        escuelaWeb
+    ]
+})
+
+const admin = new TeacherStudent({
+    name: 'Admin',
     email: 'rgonzalezjimenez8@gmail.com',
     username: 'rodolfogonzalez_',
     learningPaths: [
